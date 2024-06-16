@@ -1,0 +1,48 @@
+\documentclass[11pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\title{\textbf{\underline{Proyecto de Matemática Numérica}} \\ \textit{Predicción de crecimiento demográfico.} \\ \textit{Informe \#1}}
+\author{Luis Ernesto Serras Rimada \\ Guillermo Cepero García \\ Miguel Vadim Vilariño Pedraza}
+
+\date{\today}
+\begin{document}
+\maketitle
+En nuestro proyecto final de \textit{Matemática Numérica}, nos gustaría trabajar en el problema de predecir el crecimiento
+de una población en función del tiempo. Este es un problema importante en muchos campos, como la demografía, la
+epidemiología y la ecología, que puede resultar útil en estudios demográficos, planificación urbana y análisis de recursos
+naturales, entre otros. \\
+Existen numerosos modelos matemáticos que se pueden utilizar para predecir el crecimiento de la población, 
+como podría ser el \textit{\textbf{modelo logístico}}(1), una ecuacion diferencial que asume que la tasa
+de crecimiento de la población es proporcional al tamaño de la población y a la capacidad de carga del entorno.
+Para utilizar el modelo logístico para predecir el crecimiento de la población, se necesitan datos sobre el tamaño
+de la población en diferentes momentos. Estos datos se pueden utilizar para estimar los parámetros del modelo y
+luego utilizarlo para predecir el tamaño de la población en el futuro. Por lo cual hemos identificado un
+conjunto de datos disponible de datos reales sobre el crecimiento de la población en nuestro pais(2), cuyos datos
+incluyen el tamaño de la población en cada desde el año 1980 hasta el 2022. Luego, utilizaremos estos datos para estimar los parámetros del modelo logístico y luego emplear modelo numérico para 
+predecir el tamaño de la población en los próximos n años de forma tal que el resultado converja lo máximo a la 
+solución exacta.\\
+\textit{\textbf{Ecuacion Diferencial de Modelo Logístico:}}\\
+Donde P es la poblacion en función del tiempo(t) y r es la tasa de crecimiento de la población:
+$\frac{dP}{dt} = r * P(t)$
+\\
+\begin{table}[t]
+    \begin{center}
+        \begin{tabular}{| c | c | c |}\hline \hline
+            \textbf{Años} & \textbf{Densidad poblacional} & \textbf{Tasa(por cada 1000 personas)}}\\ \hline \hline
+            1980 & 9 693 907 & -6.2\\
+            1981 & 9 753 243 & 6.1\\
+            1982 & 9 844 836 & 9.3\\
+            1983 & 9 938 760 & 9.5\\
+            \dots & \dots & \dots\\
+            2022 & 11 089 511 & -2.1\\ \hline
+        \end{tabular}
+        \caption{Muestra en formato tabular de un dataset con datos sobre Densidad de Poblacional (1980-2022)(2)}
+        \label{tab:años}
+    \end{center}
+\end{table}
+\\ \\\textit{\textbf{Referencias}:}
+\begin{itemize}
+    \item (1)Blog del Instituto de Matemáticas de la Universidad de Sevilla \\\url{https://institucional.us.es/blogimus/2018/01/un-ejemplo-sencillo-de-modelizacion-matematica-el-crecimiento-de-poblaciones/}
+    \item (2)Sitio web de la Oficia Nacional de Estadísticas e Información(ONEI) en la sección de estadísticas demográficas \\ \url{https://www.onei.gob.cu/}
+\end{itemize}
+\end{document}

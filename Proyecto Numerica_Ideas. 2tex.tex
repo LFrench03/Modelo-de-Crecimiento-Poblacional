@@ -1,0 +1,94 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage[a4paper, left = 3cm, right = 3cm, top =2cm]{geometry}
+\title{\textbf{\underline{Proyecto de Matemática Numérica}} \\ \textit{Predicción de crecimiento demográfico.} \\ \textit{Informe \#2}}
+\author{Luis Ernesto Serras Rimada \\ Guillermo Cepero García \\ Miguel Vadim Vilariño Pedraza}
+
+\date{\today}
+\begin{document}
+\maketitle
+En nuestro proyecto final de \textit{Matemática Numérica}, nos gustaría trabajar en el problema de predecir el crecimiento
+de una población en función del tiempo. Donde se desea abordar la problematica partiendo de unas cuestiones fundamentales:\\
+¿Porqué?, ¿qué resultado se desea obtener y con qué objetivos?.\\
+Y pues, se tiene en cuenta que constituye un problema de alta significacion en muchos campos, como la demografía, la
+epidemiología y la ecología, que puede resultar útil en estudios demográficos, planificación urbana y análisis de recursos
+naturales, entre otros. En otras palabras, por ejemplo, conociendo un resultado aproximado que converja lo maximo posible a una solucion real 
+del crecimiento poblacional se podria beneficiar enormemente a la direccion y gestion de recursos de nuestro pais.\\
+Luego, se plantea trabajar el asunto con un modelo matematico que nos pueda conducir a dicha prediccion, y se considera 
+el \textit{\textbf{modelo logístico}}(1), que es ecuación diferencial que describe cómo la tasa de crecimiento de la población (dP/dt) 
+cambia con el tamaño de la población (P(t)). Cuando la población es pequeña, la tasa de crecimiento es alta, ya que 
+hay muchos recursos disponibles para cada individuo. A medida que la población crece, la tasa de crecimiento disminuye 
+porque hay menos recursos disponibles por individuo. Cuando la población alcanza su capacidad de carga (K), la tasa 
+de crecimiento se vuelve cero, indicando que la población ha alcanzado un equilibrio sostenible.\\
+\\
+\textit{Entonces se tiene que:}
+\begin{itemize}
+    \item (P(t)) es la población en función del tiempo (t).
+    \item (r) es la tasa de crecimiento intrínseca de la población.
+    \item (K) es la capacidad de carga o tamaño máximo sostenible de la población.
+\end{itemize}\\
+\textit{\underline{Parámetros a Estimar:}}
+\begin{itemize}
+    \item (r): Tasa de crecimiento intrínseca de la población. 
+    \item (K): Capacidad de carga de la población.
+\end{itemize}\\
+\textit{\textbf{\underline{Ecuacion Diferencial de Modelo Logístico:}}} $\frac{dP}{dt} = r \cdot P(t)(1 - \frac{P(t)}{K}) $\\\\
+\underline{Para la tasa de crecimiento intrinseca tenemos que:} $r = (\frac{N(t)-F(t)}{P(t)})$,\\ 
+donde N(t) es la natalidad en funcion del tiempo y F(t) es la mortalidad en funcion del tiempo.\\
+Y para obtener la capacidad de carga de la población cubana siguiendo el contexto del modelo logístico y utilizando 
+datos reales, se debe seguir un proceso que involucre la recopilación de datos sobre la población cubana y 
+los factores que podrían influir en su capacidad de carga. Estos pueden incluir la disponibilidad de recursos 
+naturales, la infraestructura, la salud pública, y la economía.\\
+Y posteriormente el análisis de esos datos y la interpretación de los resultados(Analisis Exploratorio).\\
+Por ejemplo, supongamos que después de nuestro análisis, encontramos que la tasa de crecimiento intrínseca (r) de la población 
+cubana es de 0.02 (un 2\% anual) y que la capacidad de carga (K) estimada es de 15 millones de habitantes. 
+Esto significaria que, teóricamente, nuestro pais podría soportar hasta 15 millones de personas sin agotar sus recursos 
+vitales, siempre y cuando se mantengan las condiciones actuales y se gestionen adecuadamente los recursos.
+\\ 
+Como idea de solucion se plantea la función logística, que describe cómo la población crece hacia su capacidad de 
+carga y luego se estabiliza.\\ 
+\underline{La función logística tiene la forma:} $P(t) = \frac{K}{1 + Ae^{-rt}}$ \\
+Donde (A) es una constante que depende de las condiciones iniciales de la población. Esta función muestra claramente 
+el punto de inflexión, donde la tasa de crecimiento cambia de positiva a negativa, indicando que la población 
+ha alcanzado su capacidad de carga y está comenzando a estabilizarse.\\
+Para encontrar (A), se requiere conocer el valor inicial de la población, (P(0)), y usarlo junto con (K) y (r) 
+para resolver para (A). La condición inicial (P(0)) te da el valor de la población en el momento inicial, antes de 
+que comience el crecimiento logístico.\\
+\underline{La ecuación para encontrar (A) es:} $P(0) = \frac{K}{1 + Ae^{0}}$\\
+Resolviendo para (A), obtenemos: $A = \frac{K}{P(0)} - 1$\\
+Una vez que se tenga el valor de (A), se puede sustituir en la solución general de la ecuación diferencial 
+logística para obtener la función que describe el crecimiento de la población hacia su capacidad de carga.
+Por ejemplo, si se sabe que la población inicial es de 1000 individuos (P(0) = 1000), la capacidad de carga 
+es de 10,000 individuos ((K = 10,000)), y la tasa de crecimiento intrínseca es de 0.01 ((r = 0.01)), 
+se puede calcular (A) de la siguiente manera:\\
+$A = \frac{10,000}{1000} - 1 = 9$\\
+Luego, se puede sustituir (A = 9) en la solución general para obtener la función específica que describe cómo la 
+población crecerá hacia su capacidad de carga máxima.\\\\
+Posteriormente, como idea de metodo numerico se evalua la alternativa de emplear una regresion lineal con los datos
+historicos de poblacion ya recopilados y los parametros (r) y (K) estimados, aunque la regresión lineal simple 
+no es directamente aplicable al modelo logístico debido a su naturaleza no lineal, podemos intentar aproximar el 
+comportamiento inicial del modelo logístico con una línea recta para fines predictivos iniciales. Esto implica 
+ajustar un modelo de regresión lineal entre el tamaño de la población y el tiempo, pero teniendo en cuenta que esta 
+aproximación solo será precisa durante los primeros años después de la observación inicial.\\
+Por otro lado, tambien tambien se encuentra el modelo exponencial modificado, el cual es una variante del modelo 
+exponencial que incorpora un factor de corrección para ajustarse mejor a situaciones donde el crecimiento no es 
+constante sino que cambia con el tiempo. Este modelo puede ser particularmente útil cuando el patrón de crecimiento 
+es similar a una línea recta pero con variaciones significativas en la tasa de crecimiento a lo largo del tiempo.(\textbf{*posibilidad aun no desarrollada en profundidad*})
+\\
+Y para la aproximacion numerica se propone usar los datos estimados para resolver la ecuación diferencial del modelo 
+logístico numéricamente. Para hacer esto, podemos utilizar métodos numéricos como el método de \textnf{\textit{Euler}} o \textnf{\textit{Runge-Kutta}} 
+para integrar la ecuación diferencial y obtener predicciones futuras del tamaño de la población.(\textbf{*aun no desarrollado en profundidad*})\\
+\\
+Para concluir notificamos que hemos identificado valores para confeccionar un dataset resultante de un completamiento de datasets con datos reales disponibles de población en nuestro pais(2), los cuales
+incluyen el tamaño de la población en cada año desde el año 1980 hasta el 2022, cantidad de nacidos, fallecidos y tasa intrinseca de crecimiento poblacional. 
+\\
+\url{https://github.com/LFrench03/Proyecto-Numerica/blob/e24f82cfeb5900c173cc97d22633c309d6c9fd09/dataset.csv}
+\\\textit{\textbf{\underline{Referencias}}:}
+\begin{itemize}
+    \item (1)Blog del Instituto de Matemáticas de la Universidad de Sevilla \\\url{https://institucional.us.es/blogimus/2018/01/un-ejemplo-sencillo-de-modelizacion-matematica-el-crecimiento-de-poblaciones/}
+    \item (2)Sitio web de la Oficia Nacional de Estadísticas e Información(ONEI) en la sección de estadísticas demográficas \\ \url{https://www.onei.gob.cu/}
+    \item (3)Tasa intrinseca de crecimiento poblacional \\\url{https://apuntesdedemografia.com/curso-de-demografia/temario/tema-3-crecimiento-y-estructura-de-la-poblacion/calculo-del-crecimiento-de-la-poblacion/}
+    \item (4)Herramientas para proyectar la poblacion \\\url{https://ccp.ucr.ac.cr/cursos/icamacho/public_html/planificacion/contenido/tema6.htm}
+\end{itemize}
+\end{document}
