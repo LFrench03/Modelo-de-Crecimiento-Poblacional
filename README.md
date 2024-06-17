@@ -6,3 +6,5 @@
 * Luis Ernesto Serras Rimada 
 * Guillermo Cepero García 
 * Miguel Vadim Vilariño Pedraza
+
+![](img/people.jpeg)
