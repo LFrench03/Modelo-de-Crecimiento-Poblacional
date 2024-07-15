@@ -1,12 +1,4 @@
-# Modelo de Predicción Crecimiento Poblacional
----
-
-### Integrantes:
-
-* Luis Ernesto Serras Rimada 
-* Guillermo Cepero García 
-* Miguel Vadim Vilariño Pedraza
-
+# Modelo de Predicción de Crecimiento Poblacional
 ---
 
 ![](img/cuba1.jpeg)
