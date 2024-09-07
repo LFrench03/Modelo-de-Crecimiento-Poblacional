@@ -1,4 +1,4 @@
-# Modelo de Predicción de Crecimiento Poblacional
+# Modelo Predictivo del Crecimiento Urbano
 ---
 
 ![](img/cuba1.jpeg)
