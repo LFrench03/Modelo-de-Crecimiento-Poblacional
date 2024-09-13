@@ -94,7 +94,7 @@ donde se tiene que:
 
 \section{Implementación en Python}
 \begin{frame}{curvefit}
-    Se utilizaron los datos históricos de densidad poblacional desde 1980 hasta 2020 publicados en las series estadisticas del sitio web de la ONEI. Y se desean ajustar los parámetros de la capacidad de carga($K$) y la tasa ($r$).
+    Se utilizaron los datos históricos de densidad poblacional desde 1980 hasta 2020 publicados en las series estadísticas del sitio web de la ONEI. Y se desean ajustar los parámetros de la capacidad de carga($K$) y la tasa ($r$).
     Para ello se decide utilizar la aproximación por mínimos cuadrados por medio de la función curvefit del módulo scipy.optimize en Python, cuya función matemáticamente se puede representar como:\\
     Minimizar: $\sum_{i=1}^{N} (y_{i} - f(x_{i}, \theta))^2 $ \\
 \end{frame}
@@ -111,7 +111,7 @@ donde se tiene que:
 
 \begin{frame}
     \begin{block}{\textcolor{red}{Y procede de la forma:}}
-    $$min[\sum_{i=1}^{N} (P - (\frac{K}{(P(0)-1)}̇e^{-rt}))^{2}]^{\frac{1}{2}}$$
+    $$min[\sum_{i=1}^{N} (P - (\frac{K}{(P(0)-1)e^{-rt}}))^{2}]^{\frac{1}{2}}$$
     \end{block}
 La función curvefit intentará minimizar la suma de los cuadrados de los residuales para encontrar los valores óptimos de $K$ y $r$ que minimizan esta expresión. 
 \end{frame}

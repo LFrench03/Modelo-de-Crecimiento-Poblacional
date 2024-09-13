@@ -257,7 +257,7 @@ población crecerá hacia su capacidad de carga máxima.\\\\
 %-----------------------------------------------------------------------------------
 	\subsection{Modelo numérico}\label{sub:num}
 %-----------------------------------------------------------------------------------
-Se utilizaron los datos$^{6}$ históricos de densidad poblacional desde 1980 hasta 2020 publicados en las series estadisticas del sitio web de la Oficina Nacional de Estadissticas e Informacion (ONEI)$^{7}$. Y se desean ajustar los parámetros de la capacidad de carga($K$) y la tasa ($r$).
+Se utilizaron los datos$^{6}$ históricos de densidad poblacional desde 1980 hasta 2020 publicados en las series estadísticas del sitio web de la Oficina Nacional de Estadissticas e Informacion (ONEI)$^{7}$. Y se desean ajustar los parámetros de la capacidad de carga($K$) y la tasa ($r$).
 Para ello se decide utilizar la aproximación por mínimos cuadrados por medio de la función curvefit del módulo scipy.optimize en Python, cuya función matemáticamente se puede representar como:\\
 Minimizar: $\sum_{i=1}^{N} (y_{i} - f(x_{i}, \theta))^2 $ \\
 Donde toma los parámetros:
@@ -267,7 +267,7 @@ Donde toma los parámetros:
 	\item ydata: son los valores dependientes (los valores de densidad poblacional en función del tiempo ($P$ como $y_{i}$)).
 	\item p0: Estimación inicial.$^{8}$
 \end{itemize}
-Y procede de la forma:\\ $$min[\sum_{i=1}^{N} (P - (\frac{K}{(P(0)-1)}̇e^{-rt}))^{2}]^{\frac{1}{2}}$$
+Y procede de la forma:\\ $$min[\sum_{i=1}^{N} (P - (\frac{K}{(P(0)-1)e^{-rt}}))^{2}]^{\frac{1}{2}}$$
 La función curvefit intentará minimizar la suma de los cuadrados de los residuales para encontrar los valores óptimos de $K$ y $r$ que minimizan esta expresión. 
 
 
@@ -291,7 +291,7 @@ La siguiente celda de código ajustará la función logística a los datos obser
 Observaciones:
 \begin{itemize}
 	\item La función \textbf{`curvefit`} del módulo \textbf{`scipy.optimize`} devuelve dos arrays: \textbf{`popt`}, que contiene los \textbf{parámetros estimados} , y `pcov`, que contiene la \textbf{covarianza de los parámetros estimados}.
-	\item La función \textbf{`curveffit`} es parte de la biblioteca \textbf{`SciPy`} y se utiliza para ajustar una función a un conjunto de datos mediante el método de \textbf{mínimos cuadrados}. Su objetivo principal es encontrar los parámetros de la función que minimizan la diferencia entre los valores observados y los predichos por la función.
+	\item La función \textbf{`curvefit`} es parte de la biblioteca \textbf{`SciPy`} y se utiliza para ajustar una función a un conjunto de datos mediante el método de \textbf{mínimos cuadrados}. Su objetivo principal es encontrar los parámetros de la función que minimizan la diferencia entre los valores observados y los predichos por la función.
 \end{itemize}
 
 \lstset{keywordstyle=\color{blue}, basicstyle=\small}
@@ -492,7 +492,7 @@ Estas recomendaciones buscan fortalecer el modelo actual, ampliar su alcance y u
 	\bibitem{6} Datos históricos de crecimiento poblacional usados URL: \url{https://github.com/LFrench03/Modelo-de-Crecimiento-Poblacional/blob/main/data/csv/poblacion-residente.csv}
 
 	\bibitem{7} Sitio web de la Oficia Nacional de Estadissticas e Informacion(ONEI) en la seccion de
-	estadisticas demograficas. URL: \url{https://www.onei.gob.cu/}
+	estadísticas demograficas. URL: \url{https://www.onei.gob.cu/}
 
 	\bibitem{8} Documentación de SciPy. URL: \url{https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html}.
 
