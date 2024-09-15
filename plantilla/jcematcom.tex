@@ -267,7 +267,7 @@ Donde toma los parámetros:
 	\item ydata: son los valores dependientes (los valores de densidad poblacional en función del tiempo ($P$ como $y_{i}$)).
 	\item p0: Estimación inicial.$^{8}$
 \end{itemize}
-Y procede de la forma:\\ $$min[\sum_{i=1}^{N} (P - (\frac{K}{(P(0)-1)e^{-rt}}))^{2}]^{\frac{1}{2}}$$
+Y procede de la forma:\\ $$min[\sum_{i=1}^{N} (P(t_{i}) - (\frac{K}{1+\frac{K}{(P(0)-1)}e^{-rt_{i}}}))^{2}]^{\frac{1}{2}}$$
 La función curvefit intentará minimizar la suma de los cuadrados de los residuales para encontrar los valores óptimos de $K$ y $r$ que minimizan esta expresión. 
 
 
