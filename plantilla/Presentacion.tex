@@ -158,18 +158,18 @@
 $$\omega = \frac{\delta(r_{min})}{\delta(K)} = \sum_{i=0}^{N}[2(P(t_{i}) - f(tdata, K, r)) \cdot (\frac{-f(tdata, K, r)}{K^{2}})]$$
 \end{block}
 \begin{block}{Y sustituyendo  f(tdata, K, r) en la derivada, obtenemos:}
-    $$\omega = \frac{\delta(r_{min})}{\delta(K)} = -2\sum_{i=0}^{N}[(P(t_{i}) - \frac{K}{(1 + ((\frac{K}{P_{0}} - 1) \cdot e^{-r \cdot t})) \cdot (\frac{K}{(1 + ((\frac{K}{P_{0}} - 1) \cdot e^{-r \cdot t}))})^{2}})]$$    
+    $$\omega = \frac{\delta(r_{min})}{\delta(K)} = -2\sum_{i=0}^{N}[(P(t_{i}) - \frac{K}{(1 + ((\frac{K}{P_{0}}) - 1) \cdot e^{-r \cdot t})} \cdot (\frac{K}{(1 + ((\frac{K}{P_{0}}) - 1) \cdot e^{-r \cdot t})^{2}}))]$$    
 \end{block}
 \end{frame}
 
 \begin{frame}  
 \begin{block}{Derivada parcial con respecto a r:}
 $$\omega = \frac{\delta(r_{min})}{\delta(r)} = $$ 
-\small{$$=\sum_{i=0}^{N}[2(P(t_{i}) - f(tdata, K, r)) \cdot (f(tdata, K, r) \cdot \frac{(\frac{-K}{P_{0}}) \cdot e^{-rt}}{(1 + ((\frac{K}{P_{0}} - 1) \cdot e^{-rt})^{2})})]$$}
+\small{$$=\sum_{i=0}^{N}[2(P(t_{i}) - f(tdata, K, r)) \cdot (f(tdata, K, r) \cdot \frac{(\frac{-K}{P_{0}}) \cdot e^{-rt}}{(1 + ((\frac{K}{P_{0}}) - 1) \cdot e^{-rt})^{2}})]$$}
 \end{block}
 \begin{block}{Y sustituyendo  f(tdata, K, r) en la derivada, obtenemos:}
 $$\omega = \frac{\delta(r_{min})}{\delta(r)} = $$
-\small{$$= -2\sum_{i=0}^{N}[(P(t_{i}) - \frac{K}{(1 + ((\frac{K}{P_{0}}) - 1) \cdot e^{-rt})} \cdot \frac{K}{(1 + ((\frac{K}{P_{0}}) - 1) \cdot e^{-rt})^{2}}) \cdot (\frac{-K}{P_{0}}) \cdot e^{-rt}]$$}
+\small{$$= -2\sum_{i=0}^{N}[(P(t_{i}) - \frac{K}{(1 + ((\frac{K}{P_{0}}) - 1) \cdot e^{-rt})} \cdot \frac{K}{(1 + ((\frac{K}{P_{0}}) - 1) \cdot e^{-rt})^{2}} \cdot (\frac{-K}{P_{0}}) \cdot e^{-rt})]$$}
 \end{block}
 Evaluando estas derivadas en los valores iniciales de K y r, obtenemos $\omega$
 \end{frame}
