@@ -222,7 +222,7 @@ Por tanto, los objetivos principales al realizar un análisis del crecimiento po
     \item (r): Tasa de crecimiento  de la población. 
     \item (K): Capacidad de carga de la población.
 \end{itemize}\\
-\textbf{\underline{Ecuacion Diferencial de Modelo Logístico:}} $\frac{dP}{dt} = r \cdot P(t)(1 - \frac{P(t)}{K}) $\\\\
+\textbf{\underline{Ecuacion Diferencial de Modelo Logístico:}} $$\frac{dP}{dt} = r \cdot P(t)(1 - \frac{P(t)}{K})$$\\\\
 
 Para obtener la capacidad de carga de la población cubana siguiendo el contexto del modelo logístico y utilizando 
 datos reales, se debe seguir un proceso que involucre la recopilación de datos sobre la población cubana y 
@@ -267,10 +267,67 @@ Donde toma los parámetros:
 	\item ydata: son los valores dependientes (los valores de densidad poblacional en función del tiempo ($P$ como $y_{i}$)).
 	\item p0: Estimación inicial.$^{8}$
 \end{itemize}
-Y procede de la forma:\\ $$min[\sum_{i=1}^{N} (P(t_{i}) - (\frac{K}{1+\frac{K}{(P(0)-1)}e^{-rt_{i}}}))^{2}]^{\frac{1}{2}}$$
-La función curvefit intentará minimizar la suma de los cuadrados de los residuales para encontrar los valores óptimos de $K$ y $r$ que minimizan esta expresión. 
+\small{La función curvefit intentará minimizar la suma de los cuadrados de los residuales para encontrar los valores óptimos de $K$ y $r$ que minimizan esta expresión.} \\\\
+\underline{\textbf{Paso 1: Definición de la Función de Pérdida:}}\\
+\small{El objetivo es minimizar la suma de los cuadrados residuales, que es la suma de las diferencias cuadradas entre los valores de la población observada (Pdata) y los valores de la población ajustados (f(tdata, K, r)).\\}
+\textbf{Suma de cuadrados residuales:}
+	$$\sum_{i=0}^{N}[(Pdata(t_{i}) - f(tdata_{i}, K, r))^2]$$
+\underline{\textbf{Paso 2: Inicialización de los Parámetros:}}\\
+\small{Se proporcionan valores iniciales para los parámetros K y r (initial-guess).\\}
+\underline{\textbf{Paso 3: Iteración hacia los Parámetros Óptimos:}}\\
+\small{La función curve-fit utiliza el algoritmo de \textbf{Levenberg-Marquardt} para encontrar los valores de K y r que minimizan la suma de cuadrados residuales. Este algoritmo iterativo implica los siguientes pasos:}
+\begin{enumerate}
+	\item \small{Cálculo de la matriz $\omega$: Se calcula de la función de pérdida, la matriz $\omega$ que contiene las derivadas parciales de la función de pérdida con respecto a los parámetros K y r.}
+	\item \small{Actualización de Parámetros: Utilizando la matriz $\omega$, se calculan nuevas estimaciones para K y r que minimizan localmente la función de pérdida.}
+	\item \small{Repetición: Los pasos 1 y 2 se repiten hasta que se alcanzan los criterios de convergencia (por ejemplo, un cambio insignificante en los parámetros o un número máximo de iteraciones).}
+\end{enumerate}
+
+\textbf{1-Cálculo de la matriz $\omega$:}\\
+$\omega$ es una matriz que contiene las derivadas parciales de la función de pérdida con respecto a los parámetros K y r. Se calcula como: 
+	$$\omega = [\frac{\delta(r_{min})}{\delta(K)}, \frac{\delta(r_{min})}{\delta(r)}]$$
+\small{siendo $r_{min}$ la suma de cuadrados residuales}\\
+
+Donde f(tdata, K, r) es la función logística, se tiene la \textbf{función de pérdida:}
+$$f(t, K, r) = \frac{K}{(1 + ((\frac{K}{P_{0}}) - 1)e^{-rt})}$$
+donde $P_{0}$ es el valor inicial de la población en el período de tiempo. \\\\
+\small{Para calcular las \textbf{derivadas parciales}, diferenciamos la función de pérdida con respecto a $K$ y $r$.\\}
+\textbf{Derivada parcial con respecto a K:}
+\small{$$\omega = \frac{\delta(r_{min})}{\delta(K)} = \sum_{i=0}^{N}[2(P(t_{i}) - f(tdata, K, r)) \cdot (\frac{-f(tdata, K, r)}{K^{2}})]$$}
+
+\textbf{Y sustituyendo  f(tdata, K, r) en la derivada, obtenemos:}
+\small{$$\omega = \frac{\delta(r_{min})}{\delta(K)} =$$} 
+\small{$$-2\sum_{i=0}^{N}[(P(t_{i}) - \frac{K}{(1 + ((\frac{K}{P_{0}}) - 1) \cdot e^{-r \cdot t})} \cdot (\frac{K}{(1 + ((\frac{K}{P_{0}}) - 1) \cdot e^{-r \cdot t})^{2}}))]$$}    
+
+\small{\textbf{Derivada parcial con respecto a r:}}
+$$\omega = \frac{\delta(r_{min})}{\delta(r)} = $$ 
+\tiny{$$\sum_{i=0}^{N}[2(P(t_{i}) - f(tdata, K, r)) \cdot (f(tdata, K, r) \cdot \frac{(\frac{-K}{P_{0}}) \cdot e^{-rt}}{(1 + ((\frac{K}{P_{0}}) - 1) \cdot e^{-rt})^{2}})]$$}
 
 
+\small{\textbf{Y sustituyendo  f(tdata, K, r) en la derivada, obtenemos:}}
+$$\omega = \frac{\delta(r_{min})}{\delta(r)} = $$
+\tiny{$$-2\sum_{i=0}^{N}[(P(t_{i})-\frac{K}{(1+((\frac{K}{P_{0}})-1)\cdot e^{-rt})} \cdot \frac{K}{(1+((\frac{K}{P_{0}})-1) \cdot e^{-rt})^{2}}(\frac{-K}{P_{0}})e^{-rt})]$$}
+
+\small{Evaluando estas derivadas en los valores iniciales de K y r, obtenemos $\omega$}
+
+Luego se forma una ecuación normal utilizando $\omega$ y la matriz de Hessiana (H), que es la matriz de segundas derivadas parciales de la función de pérdida.\\La ecuación normal es:
+$$(\omega^{T}\omega + \lambda I)\triangle p = -\omega^{T} r$$
+donde:
+	\begin{itemize}
+		\item $\triangle p$ es un vector de correcciones para los parámetros K y r
+		\item $\lambda$ es un parámetro de regularización (que se ajusta para controlar el paso de la iteración)
+		\item $I$ es la matriz identidad
+		\item $r$ es el vector residual, que contiene las diferencias entre los valores observados y ajustados
+	\end{itemize}
+\small{\textbf{2-Actualización de parámetros:}}\\
+Se calculan las correcciones para los parámetros resolviendo la ecuación normal. \\
+Los parámetros actualizados son:
+	$$Knuevo = Kanterior + \triangle K$$
+	$$rnuevo = ranterior + \triangle r$$
+
+\textcolor{blue}{Nota:} \textbf{$\triangle K$ y $\triangle r$} representan el cambio o corrección que se aplica a los valores anteriores de K y r para obtener los nuevos valores. Este cambio se calcula a partir de la solución de la ecuación normal, que busca minimizar la función de pérdida.\\
+
+\small{\textbf{3-Repetición:}}\\
+Finalmente, se repiten los pasos anteriores hasta que se alcanzan los criterios de convergencia, como un cambio insignificante en los parámetros o un número máximo de iteraciones. Y una vez que el algoritmo converge, los valores estimados de $K$ y $r$ se obtienen como los valores finales de \textbf{Knuevo} y \textbf{rnuevo}.
 %-----------------------------------------------------------------------------------
 	\subsection{Implementación en Python}\label{sub:python}
 %-----------------------------------------------------------------------------------
@@ -296,13 +353,13 @@ Observaciones:
 
 \lstset{keywordstyle=\color{blue}, basicstyle=\small}
 \begin{lstlisting}[language=Python, caption=Estimación de parámetros con la función sin intervalos]
-# Parámetros iniciales:
+# Parametros iniciales:
 initial_guess = [10000000, 0.01]  # Asume un valor inicial para K y r
 
 # Ajustar el modelo a los datos observados
 popt, pcov = curve_fit(f, t_data, P_data, p0=initial_guess, sigma=None, absolute_sigma=False)
 
-# Imprimir los parámetros estimados
+# Imprimir los parametros estimados
 print("Parámetros estimados:", popt)
 #Se formatean los datos:
 params_formateados = [format(param, ".2f") for param in popt]
@@ -346,7 +403,7 @@ def model(t, P, times):
         K, r, cov = estimate(i)
         results[str(i) + " años"] = {"K": K, "r" : r, "Covarianza" : cov}
     return results
-#Llamada a la función del modelo por intervalos
+#Llamada a la funcion del modelo por intervalos
 results = model(t_data[:-3], P_data[:-3], [5,8,10])
 \end{lstlisting}
 
@@ -368,8 +425,28 @@ Por otro lado cabe resaltar que en los años 1980 en adelante la isla experiment
 El análisis de los resultados reveló varios dificultades, las cuales se deben principalmente a la presencia de una tendencia casi vertical en los valores durante ciertos periodos, caracterizada por una inclinación pronunciada hacia arriba.\\
 Primeramente se visualiza una comparación de valores reales vs estimaciones del modelo sin intervalos para las estimaciones de ['11280122.85', '0.10'] devueltas por la función utilizada.
 \includegraphics[width=0.45\textwidth]{img/real_vs_pred.png}
-Donde se alcanza a apreciar un ajuste muy acertado.\\ 
-Luego, para una prediccion utilizando las mismas estimaciones para años anteriores se obtiene:
+Donde se alcanza a apreciar un ajuste bastante acertado.\\ 
+\begin{figure}[h!]%
+	\begin{center}
+		\begin{tabular}{|c|c|c|} \hline
+		Años	& Predicción    \\ \hline
+		2020 	& 11246416      \\ \hline
+		2021 	& 11249615      \\ \hline
+		2022 	& 11252511      \\ \hline
+		2023 	& 11255133      \\ \hline
+		2024 	& 11257506      \\ \hline
+		2025 	& 11259654      \\ \hline
+		2026 	& 11261599      \\ \hline
+		2027 	& 11263359      \\ \hline
+		2028 	& 11264952      \\ \hline
+		2029 	& 11266394      \\ \hline
+		2030 	& 11267699      \\ \hline
+		\end{tabular}
+	\caption{Resultados del modelo sin intervalos \label{fig:ex}}
+\end{center}
+\end{figure}
+\\
+Luego, para una prediccion utilizando las mismas estimaciones para años posteriores (2020-2030) se obtiene:
 \includegraphics[width=0.45\textwidth]{img/graph_sin_intervalos.png}
 \\
 Por otro lado, como parte del modelo con intervalos se presentaron los siguientes resultados:\\
@@ -389,11 +466,21 @@ Por otro lado, como parte del modelo con intervalos se presentaron los siguiente
 		\caption{Resultados del segundo modelo para el grupo de intervalos de 5 años \label{fig:ex}}
 	\end{center}
 \end{figure}
+\begin{figure}[h!]%
+	\begin{center}
+		\begin{tabular}{|c|c|c|} \hline
+					 & K 			& r 		\\ \hline
+			0		 & 2059434657188& 0.009		\\ \hline
+			1		 &10623571		& -0.135	\\ \hline
+			2		 & 726227		& -0.000	\\ \hline
+			3		 & 5837330070	& 0.000		\\ \hline
+		\end{tabular}
+	\caption{Resultados del segundo modelo para el grupo de intervalos de 10 años \label{fig:ex}}
+	\end{center}
+\end{figure}
 \\
-En este caso fue donde el modelo tuvo peor ajuste, devolviendo unos valores ínfimamente menores a la existencia promedio y con una tasa nula. Esto se refleja visualmente si intentamos realizar una predicción con los parámetros del último intervalo:\\
-\includegraphics[width=0.45\textwidth]{img/df5_graph.png}
-Obtenemos valores infimamente pequeños en comparación con la población media del pais.\\
-Luego, para períodos de tiempo de 8 años:\\
+Como se puede apreciar para estos dos grupos de intervalos de 5 y 10 años el ajuste fue pésimo, se supone que la causa se deba por un lado a un intervalo muy corto y por el otro uno muy largo, que tanto para uno como para el otro produjo más perturbaciones en el proceso de estimación por el patrón de crecimiento casi vertical y la posterior estabilización. La tasa devuelta para los últimos intervalos en ambos grupos es nula, por tanto no se considera una predicción.\\
+Por otro lado:\\
 \begin{figure}[h!]%
 	\begin{center}
 		\begin{tabular}{|c|c|c|} \hline
@@ -408,26 +495,34 @@ Luego, para períodos de tiempo de 8 años:\\
 	\end{center}
 \end{figure}
 \\
-Para este grupo se tuvieron los mejores resultados devolviendo en más de la mitad de los intervalos valores de $K$ y $r$ cercanos a la densidad poblacional promedio, como se puede observar gráficamente:
+Para este grupo se tuvieron los mejores resultados, devolviendo en más de la mitad de los intervalos valores de $K$ y $r$ cercanos a la densidad poblacional promedio, como se puede observar gráficamente:
 \includegraphics[width=0.45\textwidth]{img/df8_graph.png}
 \\
-Y finalmente, para grupos de 10 años:\\
 \begin{figure}[h!]%
 	\begin{center}
 		\begin{tabular}{|c|c|c|} \hline
-					 & K 			& r 		\\ \hline
-			0		 & 2059434657188& 0.009		\\ \hline
-			1		 &10623571		& -0.135	\\ \hline
-			2		 & 726227		& -0.000	\\ \hline
-			3		 & 5837330070	& 0.000		\\ \hline
+		Años	& Predicción		\\ \hline
+		2020 	& 10548308		    \\ \hline
+		2021 	& 10562666		    \\ \hline
+		2022 	& 10576750		    \\ \hline
+		2023 	& 10590563		    \\ \hline
+		2024 	& 10604111		    \\ \hline
+		2025 	& 10617398		    \\ \hline
+		2026 	& 10630427		    \\ \hline
+		2027 	& 10643205		    \\ \hline
+		2028 	& 10655733		    \\ \hline
+		2029 	& 10668018		    \\ \hline
+		2030 	& 10680063		    \\ \hline
 		\end{tabular}
-	\caption{Resultados del segundo modelo para el grupo de intervalos de 10 años \label{fig:ex}}
-	\end{center}
+	\caption{Resultados del modelo en intervalos de 8 años\label{fig:ex}}
+\end{center}
 \end{figure}
 \\
-Como última evaluación se tienen estos resultados, que, al igual que en el primer grupo, no se obtuvo un buen ajuste de los parámetros, en este caso para valores mosntruosamente mayores que la población media:
-\includegraphics[width=0.45\textwidth]{img/df10_graph.png}
-\\\\
+Estos resultados nos indican que la población tendría menor índice pero con una línea de crecimiento progresivo.\\\\
+Finalmente se realiza una evaluación general desde 1980 hasta la predicción 2020-2030 con este modelo más efectivo de intervalos de 8 años:
+\begin{center}
+	\includegraphics[width=0.45\textwidth]{img/prediccion.png}
+\end{center} 
 Por tanto, de los resultados anteriores y de forma general con respecto al análisis se puede concluir:
 \textbf{Impacto en K: }\\
 La tendencia vertical observada en los datos puede afectar significativamente el valor de K. Teóricamente, cuando el tiempo tiende a infinito, la función poblacional tiende a K. Sin embargo, en la primera aproximación global, K proporcionó un valor cercano a la población total de Cuba (11 millones), lo cual sugiere que el modelo logístico tradicional no captura adecuadamente el comportamiento real de la población.\\
