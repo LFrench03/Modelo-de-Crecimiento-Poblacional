@@ -61,7 +61,7 @@
 
 \section{Ecuación Diferencial}
 \begin{frame}{Modelo logístico}
-    Se plantea trabajar el asunto con un modelo matemático que nos pueda conducir a dicha prediccion, y se considera 
+    Se plantea trabajar el asunto con un modelo matemático que nos pueda conducir a dicha predicción, y se considera 
     el \textbf{modelo del crecimiento logístico}, que es solución de la ecuación diferencial que describe cómo la tasa de crecimiento de la población (dP/dt) 
     cambia con el tamaño de la población (P(t)) 
     \begin{block}{Ecuación Diferencial:}
@@ -69,7 +69,7 @@
     \end{block}
 \end{frame}
 \begin{frame}{Parámetros a estimar}
-\begin{block}{Donde se tiene que:}
+\begin{block}{donde se tiene que:}
 \begin{itemize}
     \item (P(t)) es la población en función del tiempo (t).
     \item (r) es la tasa de crecimiento intrínseca de la población.
@@ -123,7 +123,7 @@
     \textbf{Paso 1: Definición de la Función de Pérdida:\\}
     \small{El objetivo es minimizar la suma de los cuadrados residuales, que es la suma de las diferencias cuadradas entre los valores de la población observada (Pdata) y los valores de la población ajustados (f(tdata, K, r)).\\}
     \begin{block}{Suma de cuadrados residuales:}
-        $$\sum_{i=0}^{N}[(Pdata(t_{i}) - f(tdata_{i}, K, r))^2]$$
+        $$\sum_{i=0}^{N}(Pdata(t_{i}) - f(tdata_{i}, K, r))^{2}$$
     \end{block}
     \textbf{Paso 2: Inicialización de los Parámetros:}\\
     Se proporcionan valores iniciales para los parámetros K y r (initial-guess).\\
@@ -133,19 +133,19 @@
     \textbf{Paso 3: Iteración hacia los Parámetros Óptimos:}\\
     \small{La función curve-fit utiliza el algoritmo de \textbf{Levenberg-Marquardt} para encontrar los valores de K y r que minimizan la suma de cuadrados residuales. Este algoritmo iterativo implica los siguientes pasos:}
     \begin{enumerate}
-        \item \small{Cálculo de la matriz $\omega$: Se calcula de la función de pérdida, la matriz $\omega$ que contiene las derivadas parciales de la función de pérdida con respecto a los parámetros K y r.}
-        \item \small{Actualización de Parámetros: Utilizando la matriz $\omega$, se calculan nuevas estimaciones para K y r que minimizan localmente la función de pérdida.}
+        \item \small{Cálculo de la matriz $\phi$: Se calcula de la función de pérdida, la matriz $\phi$ que contiene las derivadas parciales de la función de pérdida con respecto a los parámetros K y r.}
+        \item \small{Actualización de Parámetros: Utilizando la matriz $\phi$, se calculan nuevas estimaciones para K y r que minimizan localmente la función de pérdida.}
         \item \small{Repetición: Los pasos 1 y 2 se repiten hasta que se alcanzan los criterios de convergencia (por ejemplo, un cambio insignificante en los parámetros o un número máximo de iteraciones).}
     \end{enumerate}
 \end{frame}
-\begin{frame}{Calculo de la matriz $\omega$}
-    $\omega$ es una matriz que contiene las derivadas parciales de la función de pérdida con respecto a los parámetros K y r.
+\begin{frame}{Calculo de la matriz $\phi$}
+    $\phi$ es una matriz que contiene las derivadas parciales de la función de pérdida con respecto a los parámetros K y r.
     \begin{block}{Se calcula como: }
-        $$\omega = [\frac{\delta(r_{min})}{\delta(K)}, \frac{\delta(r_{min})}{\delta(r)}]$$
+        $$\phi = [\frac{\partial(r_{min})}{\partial(K)}, \frac{\partial(r_{min})}{\partial(r)}]$$
         
         \begin{center}\small{siendo $r_{min}$ la suma de cuadrados residuales}\end{center}
     \end{block}
-    Donde f(tdata, K, r) es la función logística:
+    donde f(tdata, K, r) es la función logística:
     \begin{block}{Se tiene la función de pérdida:}
     $$f(t, K, r) = \frac{K}{(1 + ((\frac{K}{P_{0}}) - 1)e^{-rt})}$$
     donde $P_{0}$ es el valor inicial de la población en el período de tiempo. 
@@ -155,28 +155,28 @@
 \begin{frame}{Derivadas Parciales}    
 \small{Para calcular las derivadas parciales, diferenciamos la función de pérdida con respecto a K y r.\\}
 \begin{block}{Derivada parcial con respecto a K:}
-$$\omega = \frac{\delta(r_{min})}{\delta(K)} = \sum_{i=0}^{N}[2(P(t_{i}) - f(tdata, K, r)) \cdot (\frac{-f(tdata, K, r)}{K^{2}})]$$
+$$\phi = \frac{\partial(r_{min})}{\partial(K)} = \sum_{i=0}^{N}[2(P(t_{i}) - f(tdata, K, r)) \cdot (\frac{-f(tdata, K, r)}{K^{2}})]$$
 \end{block}
 \begin{block}{Y sustituyendo  f(tdata, K, r) en la derivada, obtenemos:}
-    $$\omega = \frac{\delta(r_{min})}{\delta(K)} = -2\sum_{i=0}^{N}[(P(t_{i}) - \frac{K}{(1 + ((\frac{K}{P_{0}}) - 1) \cdot e^{-r \cdot t})} \cdot (\frac{K}{(1 + ((\frac{K}{P_{0}}) - 1) \cdot e^{-r \cdot t})^{2}}))]$$    
+    $$\phi = \frac{\partial(r_{min})}{\partial(K)} = -2\sum_{i=0}^{N}[(P(t_{i}) - \frac{K}{(1 + ((\frac{K}{P_{0}}) - 1) \cdot e^{-r \cdot t})} \cdot (\frac{K}{(1 + ((\frac{K}{P_{0}}) - 1) \cdot e^{-r \cdot t})^{2}}))]$$    
 \end{block}
 \end{frame}
 
 \begin{frame}  
 \begin{block}{Derivada parcial con respecto a r:}
-$$\omega = \frac{\delta(r_{min})}{\delta(r)} = $$ 
+$$\phi = \frac{\partial(r_{min})}{\partial(r)} = $$ 
 \small{$$=\sum_{i=0}^{N}[2(P(t_{i}) - f(tdata, K, r)) \cdot (f(tdata, K, r) \cdot \frac{(\frac{-K}{P_{0}}) \cdot e^{-rt}}{(1 + ((\frac{K}{P_{0}}) - 1) \cdot e^{-rt})^{2}})]$$}
 \end{block}
 \begin{block}{Y sustituyendo  f(tdata, K, r) en la derivada, obtenemos:}
-$$\omega = \frac{\delta(r_{min})}{\delta(r)} = $$
+$$\phi = \frac{\partial(r_{min})}{\partial(r)} = $$
 \small{$$= -2\sum_{i=0}^{N}[(P(t_{i}) - \frac{K}{(1 + ((\frac{K}{P_{0}}) - 1) \cdot e^{-rt})} \cdot \frac{K}{(1 + ((\frac{K}{P_{0}}) - 1) \cdot e^{-rt})^{2}} \cdot (\frac{-K}{P_{0}}) \cdot e^{-rt})]$$}
 \end{block}
-Evaluando estas derivadas en los valores iniciales de K y r, obtenemos $\omega$
+Evaluando estas derivadas en los valores iniciales de K y r, obtenemos $\phi$
 \end{frame}
 
 \begin{frame}{Ecuación normal}
-    Luego se forma una ecuación normal utilizando $\omega$ y la matriz de Hessiana (H), que es la matriz de segundas derivadas parciales de la función de pérdida. La ecuación normal es:
-    $$(\omega^{T}\omega + \lambda I)\triangle p = -\omega^{T} r$$
+    Luego se forma una ecuación normal utilizando $\phi$ y la matriz de Hessiana (H), que es la matriz de segundas derivadas parciales de la función de pérdida. La ecuación normal es:
+    $$(\phi^{T}\phi + \lambda I)\triangle p = -\phi^{T} r$$
     \begin{block}{donde:}
         \begin{itemize}
             \item $\triangle p$ es un vector de correcciones para los parámetros K y r
@@ -201,7 +201,7 @@ Nota: \textbf{$\triangle K$ y $\triangle r$} representan el cambio o corrección
 \end{frame}
 
 \begin{frame}{Resultados}
-    \small{Primeramente se visualiza una comparación de valores reales vs estimaciones del modelo sin intervalos para las estimaciones de ['11280122.85', '0.10'] devueltas por la función utilizada.}
+    \small{Primeramente se visualiza una comparación de valores reales vs estimaciones del modelo sin intervalos para las estimaciones de $K$ y $r$ ('11280122.85'y '0.10' respectivamente) devueltas por la función utilizada.}
     \begin{center}
     \includegraphics[height = 7cm]{img/real_vs_pred.png}
     \end{center}
